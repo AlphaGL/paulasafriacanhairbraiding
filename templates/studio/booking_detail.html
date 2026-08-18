@@ -1,0 +1,46 @@
+{% extends "studio/base.html" %}
+
+{% block title %}Booking Details{% endblock %}
+
+{% block content %}
+<div class="studio-topbar">
+  <div>
+    <h1>{{ booking.customer_name }}</h1>
+    <p>Requested on {{ booking.created_at|date:"M j, Y g:i A" }}</p>
+  </div>
+  <a href="{% url 'studio:booking_list' %}" class="btn btn-outline">&larr; Back to Bookings</a>
+</div>
+
+<div class="card">
+  <h3>Appointment</h3>
+  <table>
+    <tr><th>Style</th><td>{{ booking.hairstyle.name }}</td></tr>
+    <tr><th>Location</th><td>{{ booking.get_location_type_display }}{% if booking.customer_address %} ({{ booking.customer_address }}){% endif %}</td></tr>
+    <tr><th>Date</th><td>{{ booking.requested_date }}</td></tr>
+    <tr><th>Time</th><td>{{ booking.requested_time }}</td></tr>
+    <tr><th>Price</th><td>${{ booking.salon_price_snapshot }}{% if booking.travel_fee_snapshot %} + ${{ booking.travel_fee_snapshot }} travel = ${{ booking.total_price }} total{% endif %}</td></tr>
+    <tr><th>Notes</th><td>{{ booking.notes|default:"—" }}</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <h3>Customer Contact</h3>
+  <table>
+    <tr><th>Name</th><td>{{ booking.customer_name }}</td></tr>
+    <tr><th>Email</th><td><a href="mailto:{{ booking.customer_email }}">{{ booking.customer_email }}</a></td></tr>
+    <tr><th>Phone</th><td><a href="tel:{{ booking.customer_phone }}">{{ booking.customer_phone }}</a></td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <h3>Status</h3>
+  <p><span class="status-pill status-{{ booking.status }}">{{ booking.get_status_display }}</span></p>
+  <form method="post" style="max-width:300px; margin-top:14px;">
+    {% csrf_token %}
+    <div class="form-group">
+      {{ form.status }}
+    </div>
+    <button type="submit" class="btn btn-primary">Update Status</button>
+  </form>
+</div>
+{% endblock %}

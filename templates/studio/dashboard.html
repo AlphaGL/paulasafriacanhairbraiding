@@ -1,0 +1,63 @@
+{% extends "studio/base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="studio-topbar">
+  <div>
+    <h1>Welcome back, {{ request.user.first_name|default:request.user.username }}</h1>
+    <p>Here's what's happening with your bookings.</p>
+  </div>
+  <a href="{% url 'studio:style_create' %}" class="btn btn-gold">+ Add New Style</a>
+</div>
+
+<div class="stat-grid">
+  <div class="stat-card">
+    <div class="stat-number">{{ pending_count }}</div>
+    <div class="stat-label">Pending Bookings</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-number">{{ upcoming_bookings|length }}</div>
+    <div class="stat-label">Appointments This Week</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-number">{{ active_style_count }} / {{ style_count }}</div>
+    <div class="stat-label">Active Styles</div>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Upcoming This Week</h3>
+  {% if upcoming_bookings %}
+    <table>
+      <thead>
+        <tr><th>Customer</th><th>Style</th><th>Date</th><th>Time</th><th>Status</th><th></th></tr>
+      </thead>
+      <tbody>
+        {% for booking in upcoming_bookings %}
+          <tr>
+            <td>{{ booking.customer_name }}</td>
+            <td>{{ booking.hairstyle.name }}</td>
+            <td>{{ booking.requested_date }}</td>
+            <td>{{ booking.requested_time }}</td>
+            <td><span class="status-pill status-{{ booking.status }}">{{ booking.get_status_display }}</span></td>
+            <td><a href="{% url 'studio:booking_detail' booking.pk %}" class="btn btn-outline btn-sm">View</a></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="empty-state">No appointments in the next 7 days.</p>
+  {% endif %}
+</div>
+
+<div class="card">
+  <h3>Quick Links</h3>
+  <div style="display:flex; gap:12px; flex-wrap:wrap;">
+    <a href="{% url 'studio:booking_list' %}" class="btn btn-outline">All Bookings</a>
+    <a href="{% url 'studio:style_list' %}" class="btn btn-outline">Manage Styles</a>
+    <a href="{% url 'studio:category_list' %}" class="btn btn-outline">Manage Categories</a>
+    <a href="{% url 'studio:business_settings' %}" class="btn btn-outline">Business Settings</a>
+  </div>
+</div>
+{% endblock %}

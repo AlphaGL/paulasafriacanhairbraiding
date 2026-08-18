@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}{{ hairstyle.name }} | {{ business.business_name }}{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container style-detail-grid">
+    <div>
+      <div class="style-gallery-main reveal-img" data-reveal id="styleGalleryTrigger">
+        {% if hairstyle.cover_image %}
+          <img id="styleMainImage" src="{{ hairstyle.cover_image.url }}" alt="{{ hairstyle.name }}">
+        {% else %}
+          <img id="styleMainImage" src="" alt="{{ hairstyle.name }}" style="display:none;">
+        {% endif %}
+        <span class="gallery-zoom-hint" aria-hidden="true">&#128269;</span>
+      </div>
+      {% if hairstyle.gallery_images.all %}
+        <div class="style-gallery-thumbs">
+          {% if hairstyle.cover_image %}
+            <img src="{{ hairstyle.cover_image.url }}" data-full="{{ hairstyle.cover_image.url }}" class="active" alt="">
+          {% endif %}
+          {% for img in hairstyle.gallery_images.all %}
+            <img src="{{ img.image.url }}" data-full="{{ img.image.url }}" alt="{{ img.caption }}">
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="reveal reveal-delay-1" data-reveal>
+      <span class="eyebrow">{{ hairstyle.category.name }}</span>
+      <h1>{{ hairstyle.name }}</h1>
+      {% if hairstyle.duration_estimate %}<p class="help-text">Estimated time: {{ hairstyle.duration_estimate }}</p>{% endif %}
+      {% if hairstyle.description %}<p style="color:var(--muted)">{{ hairstyle.description|linebreaksbr }}</p>{% endif %}
+
+      <div class="price-box">
+        <div class="price-row">
+          <span>At Paula's location</span>
+          <span class="amount">${{ hairstyle.salon_price }}</span>
+        </div>
+        <div class="price-row">
+          <span>Paula comes to you (+${{ business.travel_fee }} travel)</span>
+          <span class="amount">${{ mobile_price }}</span>
+        </div>
+      </div>
+
+      <a href="{% url 'bookings:book_style' hairstyle.slug %}" class="btn btn-gold btn-block btn-shine">Book This Style</a>
+    </div>
+  </div>
+</section>
+
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lightbox-close" id="lightboxClose" aria-label="Close">&times;</button>
+  <img id="lightboxImage" src="" alt="">
+</div>
+{% endblock %}

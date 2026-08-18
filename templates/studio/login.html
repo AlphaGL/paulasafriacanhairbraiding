@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Studio Login | Paula's African Hair Braiding</title>
+  <link rel="icon" type="image/png" href="{% static 'images/favicon-32.png' %}">
+  <link rel="apple-touch-icon" href="{% static 'images/apple-touch-icon.png' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/studio.css' %}">
+</head>
+<body>
+  <div class="login-wrap">
+    <span class="login-sparkle ls-1">&#10022;</span>
+    <span class="login-sparkle ls-2">&#10038;</span>
+    <span class="login-sparkle ls-3">&#10022;</span>
+    <div class="login-card">
+      <img src="{% static 'images/logo-emblem.png' %}" alt="" class="login-brand-mark">
+      <span class="studio-brand shimmer-text">Paula's</span>
+      <span class="studio-brand-sub">Studio Login</span>
+      <form method="post" style="margin-top:24px; text-align:left;">
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+          <div class="alert alert-error">{{ form.non_field_errors }}</div>
+        {% endif %}
+        <div class="form-group">
+          <label for="{{ form.username.id_for_label }}">Username</label>
+          {{ form.username }}
+        </div>
+        <div class="form-group">
+          <label for="{{ form.password.id_for_label }}">Password</label>
+          {{ form.password }}
+        </div>
+        <button type="submit" class="btn btn-gold" style="width:100%; justify-content:center;">Log In</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

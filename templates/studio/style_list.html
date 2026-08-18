@@ -1,0 +1,40 @@
+{% extends "studio/base.html" %}
+
+{% block title %}Styles{% endblock %}
+
+{% block content %}
+<div class="studio-topbar">
+  <div>
+    <h1>Styles</h1>
+    <p>Manage the hairstyles shown on your public site.</p>
+  </div>
+  <a href="{% url 'studio:style_create' %}" class="btn btn-gold">+ Add New Style</a>
+</div>
+
+<div class="card">
+  {% if hairstyles %}
+    <table>
+      <thead>
+        <tr><th>Photo</th><th>Name</th><th>Category</th><th>Price</th><th>Active</th><th></th></tr>
+      </thead>
+      <tbody>
+        {% for style in hairstyles %}
+          <tr>
+            <td>{% if style.cover_image %}<img src="{{ style.cover_image.url }}" alt="" style="width:44px;height:44px;object-fit:cover;border-radius:8px;">{% endif %}</td>
+            <td>{{ style.name }}</td>
+            <td>{{ style.category.name }}</td>
+            <td>${{ style.salon_price }}</td>
+            <td>{% if style.is_active %}<span class="status-pill status-confirmed">Active</span>{% else %}<span class="status-pill status-cancelled">Hidden</span>{% endif %}</td>
+            <td style="display:flex; gap:8px;">
+              <a href="{% url 'studio:style_edit' style.pk %}" class="btn btn-outline btn-sm">Edit</a>
+              <a href="{% url 'studio:style_delete' style.pk %}" class="btn btn-danger btn-sm">Delete</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="empty-state">No styles yet. Click "Add New Style" to create your first one.</p>
+  {% endif %}
+</div>
+{% endblock %}

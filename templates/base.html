@@ -1,0 +1,90 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{{ business.business_name }}{% endblock %}</title>
+  <meta name="description" content="{{ business.business_name }}: professional African hair braiding in {{ business.city }}, {{ business.state }}. Book cornrows, box braids, feed-in braids, goddess braids, Senegalese twists and more.">
+  <link rel="icon" type="image/png" href="{% static 'images/favicon-32.png' %}">
+  <link rel="apple-touch-icon" href="{% static 'images/apple-touch-icon.png' %}">
+  <meta name="theme-color" content="#0f2e22">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/site.css' %}">
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+  <header class="site-header" id="siteHeader">
+    <div class="container header-inner">
+      <a href="{% url 'core:home' %}" class="brand">
+        <img src="{% static 'images/logo-emblem.png' %}" alt="" class="brand-mark">
+        <span class="brand-text">
+          <span class="brand-script">Paula's</span>
+          <span class="brand-bold">African Hair Braiding</span>
+        </span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="site-nav" id="siteNav">
+        <a href="{% url 'core:home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">Home</a>
+        <a href="{% url 'styles:list' %}" class="{% if request.resolver_match.app_name == 'styles' %}active{% endif %}">Styles</a>
+        <a href="{% url 'core:about' %}" class="{% if request.resolver_match.url_name == 'about' %}active{% endif %}">About &amp; Contact</a>
+        <a href="{% url 'styles:list' %}" class="btn btn-pill nav-cta">Book Now</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-enter">
+    {% if messages %}
+      <div class="container">
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="strip-checklist">
+      <div class="container strip-inner">
+        <span>&#10003; Clean, Safe &amp; Professional</span>
+        <span>&#10003; Natural Hair Friendly</span>
+        <span>&#10003; On Time Every Time</span>
+        <span>&#10003; You Deserve The Best</span>
+      </div>
+    </div>
+    <div class="container footer-inner">
+      <div class="footer-col">
+        <div class="brand footer-brand">
+          <img src="{% static 'images/logo-emblem.png' %}" alt="" class="brand-mark">
+          <span class="brand-text">
+            <span class="brand-script">Paula's</span>
+            <span class="brand-bold">African Hair Braiding</span>
+          </span>
+        </div>
+        <p>Thank you for supporting a Black-owned business! <span class="pulse-heart">&#10084;</span></p>
+      </div>
+      <div class="footer-col">
+        <h4>Visit / Contact</h4>
+        <p>{{ business.address_line }}<br>{{ business.city }}, {{ business.state }} {{ business.zip_code }}<br>USA</p>
+        <p><a href="mailto:{{ business.email }}">{{ business.email }}</a></p>
+        {% if business.phone %}<p><a href="tel:{{ business.phone }}">{{ business.phone }}</a></p>{% endif %}
+      </div>
+      <div class="footer-col">
+        <h4>Hours</h4>
+        <p>{{ business.business_hours_note }}</p>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <p>&copy; {% now "Y" %} {{ business.business_name }}. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="{% static 'js/site.js' %}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

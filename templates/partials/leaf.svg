@@ -1,0 +1,5 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <path d="M10 190 C 10 120, 40 60, 110 20 C 90 70, 85 110, 100 150 C 70 130, 40 150, 10 190 Z" fill="currentColor" opacity="0.55"/>
+  <path d="M30 170 C 45 120, 70 85, 115 55" stroke="currentColor" stroke-width="2" opacity="0.35" fill="none"/>
+  <path d="M60 40 C 100 30, 140 50, 160 95 C 130 80, 100 85, 75 110 C 80 80, 75 55, 60 40 Z" fill="currentColor" opacity="0.4"/>
+</svg>

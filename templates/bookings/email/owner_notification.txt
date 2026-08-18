@@ -1,0 +1,20 @@
+{% autoescape off %}New booking request - {{ business.business_name }}
+
+Style: {{ booking.hairstyle.name }}
+Date: {{ booking.requested_date }}
+Time: {{ booking.requested_time }}
+Location: {{ booking.get_location_type_display }}
+{% if booking.location_type == "mobile" %}Customer address: {{ booking.customer_address }}
+{% endif %}
+Price: ${{ booking.salon_price_snapshot }}{% if booking.travel_fee_snapshot %} + ${{ booking.travel_fee_snapshot }} travel = ${{ booking.total_price }} total{% endif %}
+
+Customer details:
+  Name: {{ booking.customer_name }}
+  Email: {{ booking.customer_email }}
+  Phone: {{ booking.customer_phone }}
+
+Notes:
+{{ booking.notes|default:"(none)" }}
+
+---
+Reply directly to this email to reach the customer, or manage this booking in your Studio dashboard.{% endautoescape %}

@@ -1,0 +1,36 @@
+{% extends "studio/base.html" %}
+
+{% block title %}Categories{% endblock %}
+
+{% block content %}
+<div class="studio-topbar">
+  <div>
+    <h1>Categories</h1>
+    <p>Group your styles (e.g. Cornrows, Box Braids, Feed-in Braids).</p>
+  </div>
+  <a href="{% url 'studio:category_create' %}" class="btn btn-gold">+ Add Category</a>
+</div>
+
+<div class="card">
+  {% if categories %}
+    <table>
+      <thead><tr><th>Name</th><th>Styles</th><th>Sort Order</th><th></th></tr></thead>
+      <tbody>
+        {% for category in categories %}
+          <tr>
+            <td>{{ category.name }}</td>
+            <td>{{ category.styles.count }}</td>
+            <td>{{ category.sort_order }}</td>
+            <td style="display:flex; gap:8px;">
+              <a href="{% url 'studio:category_edit' category.pk %}" class="btn btn-outline btn-sm">Edit</a>
+              <a href="{% url 'studio:category_delete' category.pk %}" class="btn btn-danger btn-sm">Delete</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="empty-state">No categories yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

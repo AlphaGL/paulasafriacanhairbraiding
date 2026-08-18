@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<section class="hero">
+  <div class="hero-leaf hero-leaf-tl" aria-hidden="true">{% include "partials/leaf.svg" %}</div>
+  <div class="hero-leaf hero-leaf-br" aria-hidden="true">{% include "partials/leaf.svg" %}</div>
+
+  <span class="sparkle sparkle-1" aria-hidden="true">&#10022;</span>
+  <span class="sparkle sparkle-2" aria-hidden="true">&#10038;</span>
+  <span class="sparkle sparkle-3" aria-hidden="true">&#10022;</span>
+  <span class="sparkle sparkle-4" aria-hidden="true">&#10038;</span>
+
+  <div class="container hero-grid">
+    <div class="reveal" data-reveal>
+      <span class="eyebrow">Louisville, KY &middot; By appointment</span>
+      <h1><span class="hero-script shimmer-text">Paula's</span>African Hair Braiding</h1>
+      <p class="lead">We give the best hair services. Beautiful braids, expert stylists, and natural hair care, at a quality and affordable price.</p>
+      <div class="hero-actions">
+        <a href="{% url 'styles:list' %}" class="btn btn-gold btn-shine">Browse Styles &amp; Book</a>
+        <a href="{% url 'core:about' %}" class="btn btn-outline">Visit Us</a>
+      </div>
+    </div>
+    <div class="hero-image hero-showcase">
+      {% for style in showcase_styles %}
+        <img src="{{ style.cover_image.url }}" alt="{{ style.name }}" class="hero-showcase-img{% if forloop.first %} active{% endif %}">
+      {% endfor %}
+      <span class="hero-image-glow" aria-hidden="true"></span>
+      {% if showcase_styles|length > 1 %}
+        <div class="hero-showcase-dots">
+          {% for style in showcase_styles %}
+            <button class="hero-dot{% if forloop.first %} active{% endif %}" data-slide="{{ forloop.counter0 }}" aria-label="Show {{ style.name }}"></button>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="container features">
+    <div class="feature-card reveal" data-reveal>
+      <div class="feature-icon">&#10024;</div>
+      <div><h4>Beautiful Braids.</h4><p>Confident you.</p></div>
+    </div>
+    <div class="feature-card reveal reveal-delay-1" data-reveal>
+      <div class="feature-icon">&#128737;</div>
+      <div><h4>Expert Stylists.</h4><p>Quality braids.</p></div>
+    </div>
+    <div class="feature-card reveal reveal-delay-2" data-reveal>
+      <div class="feature-icon">&#127807;</div>
+      <div><h4>Natural Hair Care.</h4><p>Lasting impression.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-heading reveal" data-reveal>
+      <span class="eyebrow">Our Services</span>
+      <h2>Explore our most-loved hairstyles</h2>
+      <div class="section-flourish" aria-hidden="true">{% include "partials/flourish.svg" %}</div>
+      <p>Pick a style, see the price, and book your date online. Paula will confirm by email.</p>
+    </div>
+
+    <div class="style-grid">
+      {% for style in featured_styles %}
+        <div class="style-card reveal" data-reveal style="transition-delay: {{ forloop.counter0|add:'0' }}0ms">
+          <div class="style-card-image reveal-img{% cycle '' ' reveal-from-right' %}" data-reveal style="transition-delay: {{ forloop.counter0|add:'0' }}0ms">
+            {% if style.cover_image %}<img src="{{ style.cover_image.url }}" alt="{{ style.name }}">{% endif %}
+          </div>
+          <div class="style-card-body">
+            <span class="style-card-category">{{ style.category.name }}</span>
+            <h3>{{ style.name }}</h3>
+            <span class="style-card-price">From ${{ style.salon_price }}</span>
+            <a href="{{ style.get_absolute_url }}" class="btn btn-pill btn-block">View &amp; Book</a>
+          </div>
+        </div>
+      {% empty %}
+        <p class="empty-state">Styles will appear here once they're added in the studio.</p>
+      {% endfor %}
+    </div>
+
+    <div style="text-align:center; margin-top:36px;" class="reveal" data-reveal>
+      <a href="{% url 'styles:list' %}" class="btn btn-outline">See All Styles</a>
+    </div>
+  </div>
+</section>
+
+<section class="section-tight" style="background:var(--white);">
+  <div class="container about-grid">
+    <div class="reveal" data-reveal>
+      <span class="eyebrow">Two Ways To Book</span>
+      <h2>Come to Paula, or she comes to you</h2>
+      <p style="color:var(--muted)">Book an appointment at Paula's location in {{ business.city }}, {{ business.state }} for her listed price, or have her travel to you for a flat travel fee. Either way, you'll pick your style, date, and time, and get an instant email confirmation of your request.</p>
+      <a href="{% url 'styles:list' %}" class="btn btn-gold" style="margin-top:10px;">Book Your Appointment</a>
+    </div>
+    <div class="info-card reveal reveal-delay-1" data-reveal>
+      <h4>Visit Her Location</h4>
+      <p style="color:var(--muted)">{{ business.full_address }}</p>
+      <h4 style="margin-top:16px;">Hours</h4>
+      <p style="color:var(--muted)">{{ business.business_hours_note }}</p>
+    </div>
+  </div>
+</section>
+{% endblock %}

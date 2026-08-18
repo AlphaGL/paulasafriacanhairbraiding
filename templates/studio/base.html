@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Studio{% endblock %} | Paula's African Hair Braiding</title>
+  <link rel="icon" type="image/png" href="{% static 'images/favicon-32.png' %}">
+  <link rel="apple-touch-icon" href="{% static 'images/apple-touch-icon.png' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/studio.css' %}">
+</head>
+<body>
+  <div class="studio-layout">
+    <aside class="studio-sidebar">
+      <img src="{% static 'images/logo-emblem.png' %}" alt="" class="studio-brand-mark">
+      <span class="studio-brand">Paula's</span>
+      <span class="studio-brand-sub">Studio Dashboard</span>
+      <nav class="studio-nav">
+        <a href="{% url 'studio:dashboard' %}" class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">Dashboard</a>
+        <a href="{% url 'studio:booking_list' %}" class="{% if 'booking' in request.resolver_match.url_name %}active{% endif %}">Bookings</a>
+        <a href="{% url 'studio:style_list' %}" class="{% if 'style' in request.resolver_match.url_name and 'gallery' not in request.resolver_match.url_name %}active{% endif %}">Styles</a>
+        <a href="{% url 'studio:category_list' %}" class="{% if 'category' in request.resolver_match.url_name %}active{% endif %}">Categories</a>
+        <a href="{% url 'studio:business_settings' %}" class="{% if request.resolver_match.url_name == 'business_settings' %}active{% endif %}">Business Settings</a>
+        <a href="{% url 'core:home' %}" target="_blank">View Public Site &#8599;</a>
+      </nav>
+      <div class="studio-nav-footer">
+        {% if request.user.is_authenticated %}
+          <div class="user-email">{{ request.user.email|default:request.user.username }}</div>
+          <form method="post" action="{% url 'studio:logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-outline btn-sm" style="width:100%; color:#dce8e0; border-color:rgba(255,255,255,0.3);">Log Out</button>
+          </form>
+        {% endif %}
+      </div>
+    </aside>
+
+    <main class="studio-main">
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+</body>
+</html>

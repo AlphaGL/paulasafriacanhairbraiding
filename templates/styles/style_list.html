@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Styles &amp; Pricing | {{ business.business_name }}{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div class="section-heading reveal" data-reveal>
+      <span class="eyebrow">Our Services</span>
+      <h2>Choose your hairstyle</h2>
+      <div class="section-flourish" aria-hidden="true">{% include "partials/flourish.svg" %}</div>
+      <p>Every style shows both prices: at Paula's location, and if she travels to you.</p>
+    </div>
+
+    <div class="category-filter reveal" data-reveal>
+      <button class="category-pill active" data-filter="all">All Styles</button>
+      {% for category in categories %}
+        <button class="category-pill" data-filter="{{ category.slug }}">{{ category.name }}</button>
+      {% endfor %}
+    </div>
+
+    <div class="style-grid">
+      {% for style in styles %}
+        <div class="style-card reveal" data-reveal data-category="{{ style.category.slug }}" style="transition-delay: {{ forloop.counter0|add:'0' }}0ms">
+          <div class="style-card-image reveal-img{% cycle '' ' reveal-from-right' %}" data-reveal style="transition-delay: {{ forloop.counter0|add:'0' }}0ms">
+            {% if style.cover_image %}<img src="{{ style.cover_image.url }}" alt="{{ style.name }}">{% endif %}
+          </div>
+          <div class="style-card-body">
+            <span class="style-card-category">{{ style.category.name }}</span>
+            <h3>{{ style.name }}</h3>
+            {% if style.duration_estimate %}<span class="help-text">{{ style.duration_estimate }}</span>{% endif %}
+            <span class="style-card-price">From ${{ style.salon_price }}</span>
+            <a href="{{ style.get_absolute_url }}" class="btn btn-pill btn-block">View &amp; Book</a>
+          </div>
+        </div>
+      {% empty %}
+        <p class="empty-state">No styles yet. Check back soon!</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

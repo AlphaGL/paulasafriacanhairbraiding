@@ -1,0 +1,20 @@
+{% autoescape off %}Hi {{ booking.customer_name }},
+
+Thank you for your booking request with {{ business.business_name }}!
+
+Style: {{ booking.hairstyle.name }}
+Date: {{ booking.requested_date }}
+Time: {{ booking.requested_time }}
+Location: {{ booking.get_location_type_display }}
+Estimated total: ${{ booking.total_price }}
+
+This is a request, not a final confirmation. {{ business.business_name }} will follow up with you shortly by email (or phone, if you provided one) to confirm your appointment.
+
+If you need to make changes, just reply to this email or contact us directly:
+  {{ business.email }}{% if business.phone %}
+  {{ business.phone }}{% endif %}
+  {{ business.full_address }}
+
+We can't wait to braid your beauty!
+
+{{ business.business_name }}{% endautoescape %}

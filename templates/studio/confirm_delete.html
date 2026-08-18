@@ -1,0 +1,21 @@
+{% extends "studio/base.html" %}
+
+{% block title %}Delete {{ type_label }}{% endblock %}
+
+{% block content %}
+<div class="studio-topbar">
+  <div>
+    <h1>Delete this {{ type_label }}?</h1>
+    <p>This action can't be undone.</p>
+  </div>
+</div>
+
+<div class="card" style="max-width:480px;">
+  <p>Are you sure you want to delete "<strong>{{ object }}</strong>"?</p>
+  <form method="post" style="display:flex; gap:12px; margin-top:16px;">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+    <a href="javascript:history.back()" class="btn btn-outline">Cancel</a>
+  </form>
+</div>
+{% endblock %}

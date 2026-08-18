@@ -1,0 +1,52 @@
+{% extends "studio/base.html" %}
+
+{% block title %}Bookings{% endblock %}
+
+{% block content %}
+<div class="studio-topbar">
+  <div>
+    <h1>Bookings</h1>
+    <p>All appointment requests from the public site.</p>
+  </div>
+</div>
+
+<form method="get" class="filter-bar">
+  <select name="status" onchange="this.form.submit()">
+    <option value="">All Statuses</option>
+    {% for value, label in status_choices %}
+      <option value="{{ value }}" {% if current_status == value %}selected{% endif %}>{{ label }}</option>
+    {% endfor %}
+  </select>
+  <input type="date" name="date" value="{{ current_date }}" onchange="this.form.submit()">
+  {% if current_status or current_date %}
+    <a href="{% url 'studio:booking_list' %}" class="btn btn-outline btn-sm">Clear Filters</a>
+  {% endif %}
+</form>
+
+<div class="card">
+  {% if bookings %}
+    <table>
+      <thead>
+        <tr><th>Customer</th><th>Style</th><th>Location</th><th>Date</th><th>Time</th><th>Total</th><th>Status</th><th></th></tr>
+      </thead>
+      <tbody>
+        {% for booking in bookings %}
+          <tr class="{% if booking.requested_date in overlap_dates %}overlap{% endif %}">
+            <td>{{ booking.customer_name }}</td>
+            <td>{{ booking.hairstyle.name }}</td>
+            <td>{{ booking.get_location_type_display }}</td>
+            <td>{{ booking.requested_date }}</td>
+            <td>{{ booking.requested_time }}</td>
+            <td>${{ booking.total_price }}</td>
+            <td><span class="status-pill status-{{ booking.status }}">{{ booking.get_status_display }}</span></td>
+            <td><a href="{% url 'studio:booking_detail' booking.pk %}" class="btn btn-outline btn-sm">View</a></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <p class="help-text" style="margin-top:14px;">Highlighted rows share the same date as another booking. Double-check for scheduling overlaps.</p>
+  {% else %}
+    <p class="empty-state">No bookings match these filters.</p>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}About &amp; Contact | {{ business.business_name }}{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div class="section-heading reveal" data-reveal>
+      <span class="eyebrow">About &amp; Contact</span>
+      <h2>Thank you for supporting a Black-owned business</h2>
+      <div class="section-flourish" aria-hidden="true">{% include "partials/flourish.svg" %}</div>
+      <p>We can't wait to braid your beauty. Reach out any time, or head straight to booking.</p>
+    </div>
+
+    <div class="about-grid">
+      <div class="reveal" data-reveal>
+        <div class="info-card">
+          <h4>Address</h4>
+          <p>{{ business.address_line }}<br>{{ business.city }}, {{ business.state }} {{ business.zip_code }}<br>USA</p>
+        </div>
+        <div class="info-card">
+          <h4>Email</h4>
+          <p><a href="mailto:{{ business.email }}">{{ business.email }}</a></p>
+          {% if business.phone %}
+            <h4 style="margin-top:14px;">Phone</h4>
+            <p><a href="tel:{{ business.phone }}">{{ business.phone }}</a></p>
+          {% endif %}
+        </div>
+        <div class="info-card">
+          <h4>Hours</h4>
+          <p>{{ business.business_hours_note }}</p>
+        </div>
+        {% if business.instagram_url or business.facebook_url %}
+        <div class="info-card">
+          <h4>Follow Along</h4>
+          <p>
+            {% if business.instagram_url %}<a href="{{ business.instagram_url }}" target="_blank" rel="noopener">Instagram</a>{% endif %}
+            {% if business.instagram_url and business.facebook_url %} &middot; {% endif %}
+            {% if business.facebook_url %}<a href="{{ business.facebook_url }}" target="_blank" rel="noopener">Facebook</a>{% endif %}
+          </p>
+        </div>
+        {% endif %}
+      </div>
+      <div class="reveal reveal-delay-1" data-reveal>
+        <div class="info-card">
+          <h4>How Booking Works</h4>
+          <p style="color:var(--muted)">
+            Browse our styles, pick the one you love, and choose whether you'll come to us or we come to you.
+            Submit your preferred date and time, and we'll email you to confirm the details and finalize your appointment.
+          </p>
+          <a href="{% url 'styles:list' %}" class="btn btn-gold" style="margin-top:14px;">Browse Styles &amp; Book</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

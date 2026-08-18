@@ -1,0 +1,104 @@
+{% extends "studio/base.html" %}
+
+{% block title %}{% if is_new %}Add Style{% else %}Edit {{ hairstyle.name }}{% endif %}{% endblock %}
+
+{% block content %}
+<div class="studio-topbar">
+  <div>
+    <h1>{% if is_new %}Add New Style{% else %}Edit Style{% endif %}</h1>
+    <p>{% if is_new %}Create a new bookable hairstyle.{% else %}Update details for "{{ hairstyle.name }}".{% endif %}</p>
+  </div>
+  <a href="{% url 'studio:style_list' %}" class="btn btn-outline">&larr; Back to Styles</a>
+</div>
+
+<div class="card">
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="{{ form.name.id_for_label }}">Style Name</label>
+        {{ form.name }}
+        {{ form.name.errors }}
+      </div>
+      <div class="form-group">
+        <label for="{{ form.category.id_for_label }}">Category</label>
+        {{ form.category }}
+        {{ form.category.errors }}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="{{ form.description.id_for_label }}">Description</label>
+      {{ form.description }}
+      {{ form.description.errors }}
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="{{ form.salon_price.id_for_label }}">Price at Paula's Location ($)</label>
+        {{ form.salon_price }}
+        {{ form.salon_price.errors }}
+      </div>
+      <div class="form-group">
+        <label for="{{ form.duration_estimate.id_for_label }}">Duration Estimate</label>
+        {{ form.duration_estimate }}
+        <p class="help-text">e.g. "4-6 hours"</p>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="{{ form.cover_image.id_for_label }}">Cover Photo</label>
+      {% if hairstyle.cover_image %}
+        <img src="{{ hairstyle.cover_image.url }}" alt="" style="width:100px;height:100px;object-fit:cover;border-radius:8px;margin-bottom:10px;">
+      {% endif %}
+      {{ form.cover_image }}
+      {{ form.cover_image.errors }}
+    </div>
+
+    <div class="form-row">
+      <div class="form-group checkbox-row">
+        {{ form.is_active }}
+        <label for="{{ form.is_active.id_for_label }}" style="margin:0;">Show on public site</label>
+      </div>
+      <div class="form-group">
+        <label for="{{ form.sort_order.id_for_label }}">Sort Order</label>
+        {{ form.sort_order }}
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-gold">{% if is_new %}Create Style{% else %}Save Changes{% endif %}</button>
+  </form>
+</div>
+
+{% if not is_new %}
+  <div class="card">
+    <h3>Additional Photos</h3>
+    <div class="thumb-grid">
+      {% for image in gallery_images %}
+        <div class="thumb-item">
+          <img src="{{ image.image.url }}" alt="{{ image.caption }}">
+          <form method="post" action="{% url 'studio:gallery_image_delete' hairstyle.pk image.pk %}">
+            {% csrf_token %}
+            <button type="submit" title="Remove photo">&times;</button>
+          </form>
+        </div>
+      {% empty %}
+        <p class="empty-state">No extra photos yet.</p>
+      {% endfor %}
+    </div>
+    <form method="post" action="{% url 'studio:gallery_image_add' hairstyle.pk %}" enctype="multipart/form-data" style="max-width:400px;">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="{{ gallery_form.image.id_for_label }}">Add a Photo</label>
+        {{ gallery_form.image }}
+      </div>
+      <div class="form-group">
+        <label for="{{ gallery_form.caption.id_for_label }}">Caption (optional)</label>
+        {{ gallery_form.caption }}
+      </div>
+      <button type="submit" class="btn btn-outline btn-sm">Add Photo</button>
+    </form>
+  </div>
+{% endif %}
+{% endblock %}

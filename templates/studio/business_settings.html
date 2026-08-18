@@ -1,0 +1,89 @@
+{% extends "studio/base.html" %}
+
+{% block title %}Business Settings{% endblock %}
+
+{% block content %}
+<div class="studio-topbar">
+  <div>
+    <h1>Business Settings</h1>
+    <p>This information appears across your public site.</p>
+  </div>
+</div>
+
+<div class="card">
+  <form method="post">
+    {% csrf_token %}
+
+    <div class="form-group">
+      <label for="{{ form.business_name.id_for_label }}">Business Name</label>
+      {{ form.business_name }}
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="{{ form.address_line.id_for_label }}">Street Address</label>
+        {{ form.address_line }}
+      </div>
+      <div class="form-group">
+        <label for="{{ form.city.id_for_label }}">City</label>
+        {{ form.city }}
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="{{ form.state.id_for_label }}">State</label>
+        {{ form.state }}
+      </div>
+      <div class="form-group">
+        <label for="{{ form.zip_code.id_for_label }}">ZIP Code</label>
+        {{ form.zip_code }}
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="{{ form.email.id_for_label }}">Booking Notification Email</label>
+        {{ form.email }}
+        {{ form.email.errors }}
+      </div>
+      <div class="form-group">
+        <label for="{{ form.phone.id_for_label }}">Phone (optional)</label>
+        {{ form.phone }}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="{{ form.travel_fee.id_for_label }}">Flat Travel Fee ($)</label>
+      {{ form.travel_fee }}
+      <p class="help-text">Added automatically when a customer books "Paula comes to me".</p>
+      {{ form.travel_fee.errors }}
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="{{ form.business_hours_note.id_for_label }}">Hours (shown to customers)</label>
+        {{ form.business_hours_note }}
+      </div>
+      <div class="form-group">
+        <label for="{{ form.days_closed.id_for_label }}">Days Closed</label>
+        {{ form.days_closed }}
+        <p class="help-text">0=Mon, 1=Tue, 2=Wed, 3=Thu, 4=Fri, 5=Sat, 6=Sun. Comma-separated.</p>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="{{ form.instagram_url.id_for_label }}">Instagram URL (optional)</label>
+        {{ form.instagram_url }}
+      </div>
+      <div class="form-group">
+        <label for="{{ form.facebook_url.id_for_label }}">Facebook URL (optional)</label>
+        {{ form.facebook_url }}
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-gold">Save Settings</button>
+  </form>
+</div>
+{% endblock %}

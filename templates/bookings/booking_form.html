@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}Book {{ hairstyle.name }} | {{ business.business_name }}{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div class="section-heading reveal" data-reveal>
+      <span class="eyebrow">Booking Request</span>
+      <h2>{{ hairstyle.name }}</h2>
+      <p>Fill in your details below. Paula will follow up by email to confirm your appointment.</p>
+    </div>
+
+    <form method="post" class="form-card reveal" data-reveal novalidate>
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+        <div class="alert alert-error">{{ form.non_field_errors }}</div>
+      {% endif %}
+
+      <div class="form-group">
+        <label for="{{ form.customer_name.id_for_label }}">Full Name</label>
+        {{ form.customer_name }}
+        {{ form.customer_name.errors }}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.customer_email.id_for_label }}">Email</label>
+        {{ form.customer_email }}
+        {{ form.customer_email.errors }}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.customer_phone.id_for_label }}">Phone</label>
+        {{ form.customer_phone }}
+        {{ form.customer_phone.errors }}
+      </div>
+
+      <div class="form-group">
+        <label>Where should the appointment happen?</label>
+        <div class="radio-group">
+          {% for radio in form.location_type %}
+            <label class="radio-option">
+              {{ radio.tag }}
+              <span>
+                <strong>{{ radio.choice_label }}</strong><br>
+                {% if radio.data.value == "salon" %}
+                  <span class="help-text">${{ hairstyle.salon_price }}</span>
+                {% else %}
+                  <span class="help-text">${{ mobile_price }} (includes ${{ business.travel_fee }} travel fee)</span>
+                {% endif %}
+              </span>
+            </label>
+          {% endfor %}
+        </div>
+        {{ form.location_type.errors }}
+      </div>
+
+      <div class="form-group" id="addressGroup">
+        <label for="{{ form.customer_address.id_for_label }}">Your Address</label>
+        {{ form.customer_address }}
+        <p class="help-text">Needed so Paula knows where to come.</p>
+        {{ form.customer_address.errors }}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.requested_date.id_for_label }}">Preferred Date</label>
+        {{ form.requested_date }}
+        {{ form.requested_date.errors }}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.requested_time.id_for_label }}">Preferred Time</label>
+        {{ form.requested_time }}
+        {{ form.requested_time.errors }}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.notes.id_for_label }}">Notes (optional)</label>
+        {{ form.notes }}
+      </div>
+
+      <div class="price-box">
+        <div class="price-row">
+          <span>Estimated Total</span>
+          <span class="amount" id="livePrice"
+                data-salon-price="{{ hairstyle.salon_price }}"
+                data-mobile-price="{{ mobile_price }}">${{ hairstyle.salon_price }}</span>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-gold btn-block">Submit Booking Request</button>
+      <p class="help-text" style="text-align:center; margin-top:12px;">This is a request, not a final confirmation. {{ business.business_name }} will email you to confirm.</p>
+    </form>
+  </div>
+</section>
+{% endblock %}
