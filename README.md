@@ -12,7 +12,8 @@ admin dashboard at `/studio/`.
   `DATABASE_URL` is set, so you can run the app immediately
 - **Images:** Cloudinary
 - **Frontend:** Django templates + vanilla HTML/CSS/JS (no frontend framework)
-- **Email:** Django SMTP (booking requests are emailed, not paid online)
+- **Email:** Resend (HTTP API — booking requests are emailed, not paid online). Falls back to
+  SMTP/console if no Resend key is set.
 - **Deployment:** Vercel (see section 6)
 
 ## Project layout
@@ -32,7 +33,7 @@ admin dashboard at `/studio/`.
 - **Images:** Cloudinary (`zydojvwr`) — already storing the 10 starter styles' photos.
 - **Studio login:** username `paulette`, password `HpyD97qjyM15u7` — **change this**, see
   section 5. This is a real production credential now, not a local-only placeholder.
-- **Email:** still the console backend (prints to terminal) — no Gmail app password has been
+- **Email:** still the console backend (prints to terminal) — no Resend API key has been
   provided yet, see section 4.
 
 ## 1. Run it locally
@@ -69,22 +70,36 @@ Already connected. Photo uploads from Studio go straight to Cloudinary now. If C
 credentials are ever removed from `.env`, uploads automatically fall back to local disk
 storage under `media/` instead of erroring out.
 
-## 4. Connect real email sending
+## 4. Connect real email sending (Resend)
 
-By default the app just prints emails to the terminal (`EMAIL_BACKEND` = console backend) so
-you can test bookings without spamming a real inbox. This still needs to be set up.
+By default the app just prints emails to the terminal (console backend) so you can test
+bookings without spamming a real inbox. This still needs to be set up.
 
-To send real emails from `Pauletteagbeti@gmail.com`:
+**Why Resend instead of Gmail SMTP:** this app runs on Vercel as a serverless function. SMTP
+needs a blocking socket connection held open during the request — fine on a normal server, but
+a real risk of occasional timeouts in a serverless function with a hard execution limit.
+Resend sends over a plain HTTP request instead, which is faster and doesn't have that failure
+mode. `bookings/email_backends.py` implements this; nothing in `bookings/emails.py` needed to
+change.
 
-1. Turn on 2-Step Verification on that Google account (required for step 2).
-2. Go to Google Account → Security → **App passwords**, create one for "Mail".
-3. In `.env`, set:
-   ```
-   EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
-   EMAIL_HOST_USER=Pauletteagbeti@gmail.com
-   EMAIL_HOST_PASSWORD=<the 16-character app password>
-   ```
-4. Add the same three values in Vercel's environment variables once deployed (section 6).
+Setup:
+
+1. Sign up at [resend.com](https://resend.com) (free tier is plenty for this site's volume).
+2. Create an API key (Dashboard → API Keys).
+3. In `.env`, set `RESEND_API_KEY=<your key>`.
+4. Add `RESEND_API_KEY` in Vercel's environment variables too, once deployed (section 6).
+
+**Important limitation:** without a verified sending domain, Resend's default sender
+(`onboarding@resend.dev`) can only deliver to the email address on your own Resend account —
+not to arbitrary customers. That means right now, the booking notification *to Paula* will
+work, but the confirmation email *to the customer* won't actually reach them until a real
+domain is verified with Resend (Dashboard → Domains — needs a domain you control, with a few
+DNS records added). Once verified, set `RESEND_FROM_EMAIL` to an address on that domain (e.g.
+`bookings@paulasafricanhairbraiding.com`) and both emails will work fully.
+
+If `RESEND_API_KEY` is left blank, the app automatically falls back to SMTP (see
+`EMAIL_HOST_USER`/`EMAIL_HOST_PASSWORD` in `.env` for a Gmail App Password setup) or the
+console backend if that's blank too.
 
 Every booking request sends two emails: one to `BUSINESS_NOTIFICATION_EMAIL` (Paula, with full
 customer/booking details and a reply-to set to the customer) and a confirmation to the
@@ -119,8 +134,7 @@ Steps:
 3. Under **Project Settings → Environment Variables**, add every value currently in `.env`:
    `SECRET_KEY`, `DEBUG` (set to `False`), `ALLOWED_HOSTS`, `CSRF_TRUSTED_ORIGINS`,
    `DATABASE_URL`, `CLOUDINARY_URL`, `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`,
-   `CLOUDINARY_API_SECRET`, `EMAIL_BACKEND`, `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_USE_TLS`,
-   `EMAIL_HOST_USER`, `EMAIL_HOST_PASSWORD`, `DEFAULT_FROM_EMAIL`,
+   `CLOUDINARY_API_SECRET`, `RESEND_API_KEY`, `RESEND_FROM_EMAIL`,
    `BUSINESS_NOTIFICATION_EMAIL`.
    - **Important:** set `DEBUG=False` in Vercel. Never deploy with `DEBUG=True` — it exposes
      stack traces and settings publicly to anyone who visits a broken URL.

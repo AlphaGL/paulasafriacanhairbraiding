@@ -94,9 +94,8 @@ WSGI_APPLICATION = "paulas_african.wsgi.application"
 
 
 # --- Database ----------------------------------------------------------------
-# Uses Supabase Postgres via DATABASE_URL when set. Falls back to local
-# SQLite so the app can be built/tested before real Supabase credentials
-# are plugged in — set DATABASE_URL in .env to point at Supabase for real use.
+# Uses a hosted Postgres (Neon) via DATABASE_URL when set. Falls back to local
+# SQLite so the app can be built/tested before real credentials are plugged in.
 
 DATABASE_URL = config("DATABASE_URL", default="")
 
@@ -175,15 +174,29 @@ if CLOUDINARY_STORAGE["CLOUD_NAME"]:
 # Defaults to printing emails to the console for local development.
 # Set EMAIL_BACKEND (and SMTP settings) in .env for real sending.
 
-EMAIL_BACKEND = config(
-    "EMAIL_BACKEND", default="django.core.mail.backends.console.EmailBackend"
-)
 EMAIL_HOST = config("EMAIL_HOST", default="smtp.gmail.com")
 EMAIL_PORT = config("EMAIL_PORT", default=587, cast=int)
 EMAIL_USE_TLS = config("EMAIL_USE_TLS", default=True, cast=bool)
 EMAIL_HOST_USER = config("EMAIL_HOST_USER", default="")
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default="")
-DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default="Pauletteagbeti@gmail.com")
+
+# Resend (HTTP API) is used instead of SMTP whenever a key is configured —
+# more reliable than a blocking SMTP socket inside a serverless function
+# (see bookings/email_backends.py). Falls back to SMTP/console otherwise.
+RESEND_API_KEY = config("RESEND_API_KEY", default="")
+
+if RESEND_API_KEY:
+    EMAIL_BACKEND = "bookings.email_backends.ResendEmailBackend"
+    # Resend's sandbox sender works with no domain setup, but can only deliver
+    # to the email address on the Resend account itself — fine for now since
+    # that's Paula's own inbox; once a real domain is verified with Resend,
+    # set RESEND_FROM_EMAIL to an address on that domain to email customers too.
+    DEFAULT_FROM_EMAIL = config("RESEND_FROM_EMAIL", default="onboarding@resend.dev")
+else:
+    EMAIL_BACKEND = config(
+        "EMAIL_BACKEND", default="django.core.mail.backends.console.EmailBackend"
+    )
+    DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default="Pauletteagbeti@gmail.com")
 
 # Where new booking-request notifications are sent.
 BUSINESS_NOTIFICATION_EMAIL = config(
