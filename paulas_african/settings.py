@@ -34,6 +34,10 @@ CSRF_TRUSTED_ORIGINS = config(
     cast=Csv(),
 )
 
+# Absolute base URL of the live site — used to build full links/image URLs in
+# emails (which can't use relative paths the way web pages can).
+SITE_URL = config("SITE_URL", default="https://paulasafricanhairbraiding.store")
+
 # Vercel terminates HTTPS at its edge and forwards to the app over plain HTTP,
 # marking the original protocol in this header — without it, Django thinks
 # every request is insecure even when the visitor is on https://.

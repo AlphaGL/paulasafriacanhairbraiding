@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}{{ business.business_name }}{% endblock %}</title>
+</head>
+<body style="margin:0; padding:0; background-color:#f1ead9;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f1ead9; padding:32px 16px;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px; width:100%; background-color:#ffffff; border-radius:12px; overflow:hidden; box-shadow:0 4px 18px rgba(18,58,84,0.12);">
+          <tr>
+            <td align="center" style="background-color:#123a54; padding:32px 24px;">
+              <a href="{{ site_url }}" style="text-decoration:none;">
+                <img src="{{ site_url }}/static/images/logo-emblem.png" width="56" height="56" alt="Paula's African Hair Braiding" style="display:block; border-radius:50%; margin:0 auto 12px; border:0;">
+              </a>
+              <div style="font-family: Georgia, 'Times New Roman', serif; font-size:22px; color:#ffffff; font-weight:bold; letter-spacing:0.5px;">Paula's African Hair Braiding</div>
+              <div style="font-family: Arial, sans-serif; font-size:11px; color:#4fa3d1; letter-spacing:2px; text-transform:uppercase; margin-top:6px;">Louisville, Kentucky</div>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:32px 28px; font-family: Arial, Helvetica, sans-serif; color:#1c2420;">
+              {% block body %}{% endblock %}
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color:#1a4a6b; padding:24px 28px; font-family: Arial, sans-serif; font-size:12px; color:#cdd9d1; text-align:center;">
+              <div style="margin-bottom:10px;">
+                <a href="{{ site_url }}" style="color:#a8d4ec; text-decoration:none; font-weight:bold;">Visit our website</a>
+                &nbsp;&middot;&nbsp;
+                <a href="{{ site_url }}{% url 'styles:list' %}" style="color:#a8d4ec; text-decoration:none; font-weight:bold;">Browse styles</a>
+              </div>
+              <div>{{ business.address_line }}, {{ business.city }}, {{ business.state }} {{ business.zip_code }}</div>
+              <div style="margin-top:4px;">
+                <a href="mailto:{{ business.email }}" style="color:#cdd9d1; text-decoration:none;">{{ business.email }}</a>{% if business.phone %} &middot; {{ business.phone }}{% endif %}
+              </div>
+              <div style="margin-top:12px; color:#8fa298;">&copy; {% now "Y" %} {{ business.business_name }}</div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

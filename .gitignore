@@ -9,4 +9,5 @@ media/
 *.log
 .vercel/
 logo.jpg
+logo-updated.jpg
 .claude/

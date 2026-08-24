@@ -1,0 +1,46 @@
+{% extends "bookings/email/email_base.html" %}
+
+{% block title %}Your booking request with {{ business.business_name }}{% endblock %}
+
+{% block body %}
+  <h1 style="font-family: Georgia, 'Times New Roman', serif; font-size:21px; color:#123a54; margin:0 0 6px;">Thank you, {{ booking.customer_name }}!</h1>
+  <p style="font-size:14px; line-height:1.6; color:#5c6a63; margin:0 0 22px;">Your booking request has been received. Here's a summary of what you asked for:</p>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e5ddc8; border-radius:8px; margin-bottom:20px; border-collapse:collapse;">
+    <tr>
+      <td style="padding:12px 16px; font-size:13px; color:#5c6a63; border-bottom:1px solid #eee;">Style</td>
+      <td style="padding:12px 16px; font-size:13px; color:#123a54; font-weight:bold; text-align:right; border-bottom:1px solid #eee;">{{ booking.hairstyle.name }}</td>
+    </tr>
+    <tr>
+      <td style="padding:12px 16px; font-size:13px; color:#5c6a63; border-bottom:1px solid #eee;">Date &amp; Time</td>
+      <td style="padding:12px 16px; font-size:13px; color:#123a54; font-weight:bold; text-align:right; border-bottom:1px solid #eee;">{{ booking.requested_date }} at {{ booking.requested_time }}</td>
+    </tr>
+    <tr>
+      <td style="padding:12px 16px; font-size:13px; color:#5c6a63; {% if booking.customer_address %}border-bottom:1px solid #eee;{% endif %}">Location</td>
+      <td style="padding:12px 16px; font-size:13px; color:#123a54; font-weight:bold; text-align:right; {% if booking.customer_address %}border-bottom:1px solid #eee;{% endif %}">{{ booking.get_location_type_display }}</td>
+    </tr>
+    {% if booking.customer_address %}
+    <tr>
+      <td style="padding:12px 16px; font-size:13px; color:#5c6a63;">Address</td>
+      <td style="padding:12px 16px; font-size:13px; color:#123a54; font-weight:bold; text-align:right;">{{ booking.customer_address }}</td>
+    </tr>
+    {% endif %}
+    <tr>
+      <td style="padding:14px 16px; font-size:14px; color:#1a4a6b; font-weight:bold; background-color:#fbf5e7;">Estimated Total</td>
+      <td style="padding:14px 16px; font-size:16px; color:#1a4a6b; font-weight:bold; text-align:right; background-color:#fbf5e7;">${{ booking.total_price }}</td>
+    </tr>
+  </table>
+
+  <p style="font-size:13px; line-height:1.6; color:#8a5a00; background-color:#fff2d6; border-radius:8px; padding:12px 16px; margin:0 0 22px;">
+    This is a request, not a final confirmation. {{ business.business_name }} will follow up with you shortly by email{% if booking.customer_phone %} or phone{% endif %} to confirm your appointment.
+  </p>
+
+  <div style="text-align:center; margin:26px 0;">
+    <a href="{{ site_url }}{% url 'styles:list' %}" style="background-color:#4fa3d1; color:#123a54; text-decoration:none; font-weight:bold; font-size:14px; padding:13px 30px; border-radius:999px; display:inline-block;">Browse More Styles</a>
+  </div>
+
+  <p style="font-size:13px; line-height:1.6; color:#5c6a63; margin:0;">
+    Need to make changes? Just reply to this email{% if business.phone %} or call {{ business.phone }}{% endif %}.
+  </p>
+  <p style="font-size:14px; color:#123a54; margin-top:20px; margin-bottom:0;">We can't wait to braid your beauty! &#10084;</p>
+{% endblock %}

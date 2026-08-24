@@ -70,36 +70,32 @@ Already connected. Photo uploads from Studio go straight to Cloudinary now. If C
 credentials are ever removed from `.env`, uploads automatically fall back to local disk
 storage under `media/` instead of erroring out.
 
-## 4. Connect real email sending (Resend)
+## 4. Email sending (Resend) — already connected
 
-By default the app just prints emails to the terminal (console backend) so you can test
-bookings without spamming a real inbox. This still needs to be set up.
+**Status: live.** `RESEND_API_KEY` is set, and the domain `noreply.paulasafricanhairbraiding.store`
+is verified with Resend, so both booking emails deliver to any address now — not just to the
+Resend account owner. Sender is `RESEND_FROM_EMAIL` in `.env`
+(`bookings@noreply.paulasafricanhairbraiding.store`).
+
+Both emails are sent as HTML (styled, matching the site's branding — logo, colors, a details
+table, a CTA button) with a plain-text fallback for email clients that don't render HTML.
+Templates: `templates/bookings/email/*.html` (styled) and `*.txt` (plain-text fallback), built
+from a shared `email_base.html` layout.
 
 **Why Resend instead of Gmail SMTP:** this app runs on Vercel as a serverless function. SMTP
 needs a blocking socket connection held open during the request — fine on a normal server, but
 a real risk of occasional timeouts in a serverless function with a hard execution limit.
 Resend sends over a plain HTTP request instead, which is faster and doesn't have that failure
-mode. `bookings/email_backends.py` implements this; nothing in `bookings/emails.py` needed to
-change.
+mode. `bookings/email_backends.py` implements this; `bookings/emails.py` just builds the
+message the same way it always did.
 
-Setup:
+If `RESEND_API_KEY` is ever removed from `.env`, the app automatically falls back to SMTP (see
+`EMAIL_HOST_USER`/`EMAIL_HOST_PASSWORD` for a Gmail App Password setup) or the console backend
+if that's blank too.
 
-1. Sign up at [resend.com](https://resend.com) (free tier is plenty for this site's volume).
-2. Create an API key (Dashboard → API Keys).
-3. In `.env`, set `RESEND_API_KEY=<your key>`.
-4. Add `RESEND_API_KEY` in Vercel's environment variables too, once deployed (section 6).
-
-**Important limitation:** without a verified sending domain, Resend's default sender
-(`onboarding@resend.dev`) can only deliver to the email address on your own Resend account —
-not to arbitrary customers. That means right now, the booking notification *to Paula* will
-work, but the confirmation email *to the customer* won't actually reach them until a real
-domain is verified with Resend (Dashboard → Domains — needs a domain you control, with a few
-DNS records added). Once verified, set `RESEND_FROM_EMAIL` to an address on that domain (e.g.
-`bookings@paulasafricanhairbraiding.com`) and both emails will work fully.
-
-If `RESEND_API_KEY` is left blank, the app automatically falls back to SMTP (see
-`EMAIL_HOST_USER`/`EMAIL_HOST_PASSWORD` in `.env` for a Gmail App Password setup) or the
-console backend if that's blank too.
+**Remember for Vercel:** add `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, and `SITE_URL` (used to
+build the logo image URL and website links inside the emails) to Vercel's environment
+variables too — local `.env` only affects your machine (section 6).
 
 Every booking request sends two emails: one to `BUSINESS_NOTIFICATION_EMAIL` (Paula, with full
 customer/booking details and a reply-to set to the customer) and a confirmation to the
@@ -132,10 +128,13 @@ Steps:
 1. **Push this repo to GitHub** (see section 7 below if not done yet).
 2. In the [Vercel dashboard](https://vercel.com/new), import the GitHub repo.
 3. Under **Project Settings → Environment Variables**, add every value currently in `.env`:
-   `SECRET_KEY`, `DEBUG` (set to `False`), `ALLOWED_HOSTS`, `CSRF_TRUSTED_ORIGINS`,
+   `SECRET_KEY`, `DEBUG` (set to `False`), `ALLOWED_HOSTS`, `CSRF_TRUSTED_ORIGINS`, `SITE_URL`,
    `DATABASE_URL`, `CLOUDINARY_URL`, `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`,
    `CLOUDINARY_API_SECRET`, `RESEND_API_KEY`, `RESEND_FROM_EMAIL`,
    `BUSINESS_NOTIFICATION_EMAIL`.
+   - Once the custom domain is connected (still a separate step — see below), update `SITE_URL`
+     to `https://paulasafricanhairbraiding.store` so email logo/links point at the real domain
+     instead of the `.vercel.app` one.
    - **Important:** set `DEBUG=False` in Vercel. Never deploy with `DEBUG=True` — it exposes
      stack traces and settings publicly to anyone who visits a broken URL.
 4. Click Deploy. Vercel installs `requirements.txt` and runs `api/index.py` as the app.

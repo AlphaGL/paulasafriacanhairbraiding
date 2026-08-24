@@ -31,6 +31,13 @@ class ResendEmailBackend(BaseEmailBackend):
             if message.reply_to:
                 payload["reply_to"] = list(message.reply_to)
 
+            # EmailMultiAlternatives (used for the styled booking emails) attaches
+            # the HTML version as an "alternative" — pull it out for Resend's API.
+            for content, mimetype in getattr(message, "alternatives", []):
+                if mimetype == "text/html":
+                    payload["html"] = content
+                    break
+
             try:
                 resend.Emails.send(payload)
                 sent_count += 1
