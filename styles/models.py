@@ -31,7 +31,15 @@ class HairstyleService(models.Model):
     salon_price = models.DecimalField(
         max_digits=7,
         decimal_places=2,
-        help_text="Price when the customer comes to Paula's location.",
+        help_text="Price when the customer comes to Paula's location. Always used for "
+        "the booking total, even if a display override below is set.",
+    )
+    price_display_override = models.CharField(
+        max_length=100,
+        blank=True,
+        help_text='Optional. If set, this text replaces the price shown to customers '
+        'everywhere on the site (e.g. "From $150+", "Book for a quote", "Price varies '
+        'by length"). Leave blank to just show the price above.',
     )
     duration_estimate = models.CharField(
         max_length=100,

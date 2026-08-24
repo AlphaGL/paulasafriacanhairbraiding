@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Session Expired | {{ business.business_name }}{% endblock %}
+
+{% block content %}
+<section class="section" style="text-align:center;">
+  <div class="container" style="max-width:560px;">
+    <span class="badge">Session Expired</span>
+    <h2>That form took a bit too long</h2>
+    <p style="color:var(--muted)">For your security, forms expire after a while. Please go back and try submitting again — nothing was lost, you'll just need to resubmit.</p>
+    <div style="display:flex; gap:16px; justify-content:center; margin-top:24px; flex-wrap:wrap;">
+      <a href="{% url 'core:home' %}" class="btn btn-gold">Back to Home</a>
+      <a href="{% url 'styles:list' %}" class="btn btn-outline">Browse Styles</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Access Denied | {{ business.business_name }}{% endblock %}
+
+{% block content %}
+<section class="section" style="text-align:center;">
+  <div class="container" style="max-width:560px;">
+    <span class="badge">403</span>
+    <h2>You don't have access to that page</h2>
+    <p style="color:var(--muted)">This page is restricted. If you think that's a mistake, try logging in again or head back home.</p>
+    <div style="display:flex; gap:16px; justify-content:center; margin-top:24px; flex-wrap:wrap;">
+      <a href="{% url 'core:home' %}" class="btn btn-gold">Back to Home</a>
+      <a href="{% url 'studio:login' %}" class="btn btn-outline">Studio Login</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

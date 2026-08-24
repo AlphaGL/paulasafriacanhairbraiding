@@ -38,6 +38,7 @@
       <div class="form-group">
         <label for="{{ form.salon_price.id_for_label }}">Price at Paula's Location ($)</label>
         {{ form.salon_price }}
+        <p class="help-text">Always used for the booking total, even if a display override is set below.</p>
         {{ form.salon_price.errors }}
       </div>
       <div class="form-group">
@@ -45,6 +46,13 @@
         {{ form.duration_estimate }}
         <p class="help-text">e.g. "4-6 hours"</p>
       </div>
+    </div>
+
+    <div class="form-group">
+      <label for="{{ form.price_display_override.id_for_label }}">Price Display Override (optional)</label>
+      {{ form.price_display_override }}
+      <p class="help-text">If filled in, customers see this text everywhere instead of the price above — e.g. "From $150+" or "Book for a quote".</p>
+      {{ form.price_display_override.errors }}
     </div>
 
     <div class="form-group">

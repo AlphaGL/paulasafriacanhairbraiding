@@ -70,7 +70,7 @@
           <div class="style-card-body">
             <span class="style-card-category">{{ style.category.name }}</span>
             <h3>{{ style.name }}</h3>
-            <span class="style-card-price">From ${{ style.salon_price }}</span>
+            <span class="style-card-price">{% if style.price_display_override %}{{ style.price_display_override }}{% else %}From ${{ style.salon_price }}{% endif %}</span>
             <a href="{{ style.get_absolute_url }}" class="btn btn-pill btn-block">View &amp; Book</a>
           </div>
         </div>

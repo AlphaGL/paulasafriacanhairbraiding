@@ -44,10 +44,18 @@
               {{ radio.tag }}
               <span>
                 <strong>{{ radio.choice_label }}</strong><br>
-                {% if radio.data.value == "salon" %}
-                  <span class="help-text">${{ hairstyle.salon_price }}</span>
+                {% if hairstyle.price_display_override %}
+                  {% if radio.data.value == "salon" %}
+                    <span class="help-text">{{ hairstyle.price_display_override }}</span>
+                  {% else %}
+                    <span class="help-text">{{ hairstyle.price_display_override }} + ${{ business.travel_fee }} travel fee</span>
+                  {% endif %}
                 {% else %}
-                  <span class="help-text">${{ mobile_price }} (includes ${{ business.travel_fee }} travel fee)</span>
+                  {% if radio.data.value == "salon" %}
+                    <span class="help-text">${{ hairstyle.salon_price }}</span>
+                  {% else %}
+                    <span class="help-text">${{ mobile_price }} (includes ${{ business.travel_fee }} travel fee)</span>
+                  {% endif %}
                 {% endif %}
               </span>
             </label>
@@ -81,12 +89,20 @@
       </div>
 
       <div class="price-box">
-        <div class="price-row">
-          <span>Estimated Total</span>
-          <span class="amount" id="livePrice"
-                data-salon-price="{{ hairstyle.salon_price }}"
-                data-mobile-price="{{ mobile_price }}">${{ hairstyle.salon_price }}</span>
-        </div>
+        {% if hairstyle.price_display_override %}
+          <div class="price-row">
+            <span>Pricing</span>
+            <span class="amount">{{ hairstyle.price_display_override }}</span>
+          </div>
+          <p class="help-text" style="margin-top:6px;">Paula will confirm your exact price when she reaches out. A flat ${{ business.travel_fee }} travel fee applies if she comes to you.</p>
+        {% else %}
+          <div class="price-row">
+            <span>Estimated Total</span>
+            <span class="amount" id="livePrice"
+                  data-salon-price="{{ hairstyle.salon_price }}"
+                  data-mobile-price="{{ mobile_price }}">${{ hairstyle.salon_price }}</span>
+          </div>
+        {% endif %}
       </div>
 
       <button type="submit" class="btn btn-gold btn-block">Submit Booking Request</button>

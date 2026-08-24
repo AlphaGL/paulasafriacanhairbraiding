@@ -18,6 +18,7 @@ class HairstyleForm(forms.ModelForm):
             "category",
             "description",
             "salon_price",
+            "price_display_override",
             "duration_estimate",
             "cover_image",
             "is_active",
@@ -25,6 +26,9 @@ class HairstyleForm(forms.ModelForm):
         ]
         widgets = {
             "description": forms.Textarea(attrs={"rows": 4}),
+            "price_display_override": forms.TextInput(
+                attrs={"placeholder": 'e.g. "From $150+", "Book for a quote" (optional)'}
+            ),
         }
 
 
