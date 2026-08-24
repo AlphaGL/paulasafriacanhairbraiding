@@ -31,8 +31,9 @@ admin dashboard at `/studio/`.
 
 - **Database:** Neon Postgres (real, not SQLite) — already migrated and seeded.
 - **Images:** Cloudinary (`zydojvwr`) — already storing the 10 starter styles' photos.
-- **Studio login:** username `paulette`, password `HpyD97qjyM15u7` — **change this**, see
-  section 5. This is a real production credential now, not a local-only placeholder.
+- **Studio login:** username `paulette`. Password was rotated and handed to the client directly
+  (not written here — this file goes into version control, real credentials shouldn't). To
+  change it yourself, see section 5.
 - **Email:** still the console backend (prints to terminal) — no Resend API key has been
   provided yet, see section 4.
 
