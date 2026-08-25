@@ -1,7 +1,9 @@
 from datetime import date, timedelta
 
 from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
@@ -25,6 +27,22 @@ class StudioLoginView(LoginView):
 
 class StudioLogoutView(LogoutView):
     next_page = reverse_lazy("studio:login")
+
+
+@login_required
+def change_password(request):
+    if request.method == "POST":
+        form = PasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            user = form.save()
+            # Changing the password invalidates the old session hash — without
+            # this the admin would be immediately logged out by their own change.
+            update_session_auth_hash(request, user)
+            messages.success(request, "Password updated.")
+            return redirect("studio:dashboard")
+    else:
+        form = PasswordChangeForm(user=request.user)
+    return render(request, "studio/change_password.html", {"form": form})
 
 
 @login_required

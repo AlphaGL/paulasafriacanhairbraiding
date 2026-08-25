@@ -7,6 +7,7 @@ app_name = "studio"
 urlpatterns = [
     path("login/", views.StudioLoginView.as_view(), name="login"),
     path("logout/", views.StudioLogoutView.as_view(), name="logout"),
+    path("password/", views.change_password, name="change_password"),
     path("", views.dashboard, name="dashboard"),
     path("bookings/", views.booking_list, name="booking_list"),
     path("bookings/<int:pk>/", views.booking_detail, name="booking_detail"),

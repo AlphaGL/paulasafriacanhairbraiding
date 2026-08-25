@@ -27,6 +27,7 @@
       <div class="studio-nav-footer">
         {% if request.user.is_authenticated %}
           <div class="user-email">{{ request.user.email|default:request.user.username }}</div>
+          <a href="{% url 'studio:change_password' %}" class="btn btn-outline btn-sm" style="width:100%; margin-bottom:8px; color:#dce8e0; border-color:rgba(255,255,255,0.3);">Change Password</a>
           <form method="post" action="{% url 'studio:logout' %}">
             {% csrf_token %}
             <button type="submit" class="btn btn-outline btn-sm" style="width:100%; color:#dce8e0; border-color:rgba(255,255,255,0.3);">Log Out</button>
