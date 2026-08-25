@@ -11,8 +11,17 @@
   <link rel="stylesheet" href="{% static 'css/studio.css' %}">
 </head>
 <body>
+  <div class="studio-mobile-bar">
+    <button class="studio-hamburger" id="studioNavToggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="studioSidebar">
+      <span></span><span></span><span></span>
+    </button>
+    <img src="{% static 'images/logo-emblem.png' %}" alt="" class="studio-mobile-mark">
+    <span class="studio-mobile-title">Paula's Studio</span>
+  </div>
+  <div class="studio-sidebar-backdrop" id="studioSidebarBackdrop"></div>
+
   <div class="studio-layout">
-    <aside class="studio-sidebar">
+    <aside class="studio-sidebar" id="studioSidebar">
       <img src="{% static 'images/logo-emblem.png' %}" alt="" class="studio-brand-mark">
       <span class="studio-brand">Paula's</span>
       <span class="studio-brand-sub">Studio Dashboard</span>
@@ -45,5 +54,7 @@
       {% block content %}{% endblock %}
     </main>
   </div>
+
+  <script src="{% static 'js/studio.js' %}"></script>
 </body>
 </html>
