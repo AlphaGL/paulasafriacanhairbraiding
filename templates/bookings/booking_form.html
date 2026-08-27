@@ -8,7 +8,7 @@
     <div class="section-heading reveal" data-reveal>
       <span class="eyebrow">Booking Request</span>
       <h2>{{ hairstyle.name }}</h2>
-      <p>Fill in your details below. Paula will follow up by email to confirm your appointment.</p>
+      <p>Fill in your details below. Paulette will follow up by email to confirm your appointment.</p>
     </div>
 
     <form method="post" class="form-card reveal" data-reveal novalidate>
@@ -67,7 +67,7 @@
       <div class="form-group" id="addressGroup">
         <label for="{{ form.customer_address.id_for_label }}">Your Address</label>
         {{ form.customer_address }}
-        <p class="help-text">Needed so Paula knows where to come.</p>
+        <p class="help-text">Needed so Paulette knows where to come.</p>
         {{ form.customer_address.errors }}
       </div>
 
@@ -94,7 +94,7 @@
             <span>Pricing</span>
             <span class="amount">{{ hairstyle.price_display_override }}</span>
           </div>
-          <p class="help-text" style="margin-top:6px;">Paula will confirm your exact price when she reaches out. A flat ${{ business.travel_fee }} travel fee applies if she comes to you.</p>
+          <p class="help-text" style="margin-top:6px;">Paulette will confirm your exact price when she reaches out. A flat ${{ business.travel_fee }} travel fee applies if she comes to you.</p>
         {% else %}
           <div class="price-row">
             <span>Estimated Total</span>

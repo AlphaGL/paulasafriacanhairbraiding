@@ -193,7 +193,7 @@ if RESEND_API_KEY:
     EMAIL_BACKEND = "bookings.email_backends.ResendEmailBackend"
     # Resend's sandbox sender works with no domain setup, but can only deliver
     # to the email address on the Resend account itself — fine for now since
-    # that's Paula's own inbox; once a real domain is verified with Resend,
+    # that's Paulette's own inbox; once a real domain is verified with Resend,
     # set RESEND_FROM_EMAIL to an address on that domain to email customers too.
     DEFAULT_FROM_EMAIL = config("RESEND_FROM_EMAIL", default="onboarding@resend.dev")
 else:

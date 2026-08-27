@@ -1,8 +1,8 @@
-# Paula's African Hair Braiding — Website
+# Paulette's African Hair Braiding — Website
 
 A Django website for booking hair braiding appointments. Customers browse hairstyles by
-category, see pricing (including a travel fee if Paula comes to them), and submit a booking
-request. Paula manages everything — styles, photos, prices, and bookings — from a custom
+category, see pricing (including a travel fee if Paulette comes to them), and submit a booking
+request. Paulette manages everything — styles, photos, prices, and bookings — from a custom
 admin dashboard at `/studio/`.
 
 ## Tech stack
@@ -98,7 +98,7 @@ if that's blank too.
 build the logo image URL and website links inside the emails) to Vercel's environment
 variables too — local `.env` only affects your machine (section 6).
 
-Every booking request sends two emails: one to `BUSINESS_NOTIFICATION_EMAIL` (Paula, with full
+Every booking request sends two emails: one to `BUSINESS_NOTIFICATION_EMAIL` (Paulette, with full
 customer/booking details and a reply-to set to the customer) and a confirmation to the
 customer.
 
@@ -161,13 +161,13 @@ git push -u origin main
 
 ## How booking pricing works
 
-Each style has one price (`salon_price`) for when the customer comes to Paula. If the customer
-selects "Paula comes to me," the flat **travel fee** (set in Studio → Business Settings) is
+Each style has one price (`salon_price`) for when the customer comes to Paulette. If the customer
+selects "Paulette comes to me," the flat **travel fee** (set in Studio → Business Settings) is
 added automatically. The price shown to the customer and stored on the booking is snapshotted
 at booking time, so changing prices later doesn't rewrite past bookings.
 
 ## What's intentionally not included
 
-- Online payment — bookings are requests only; Paula follows up by email.
+- Online payment — bookings are requests only; Paulette follows up by email.
 - Distance-based travel pricing — the travel fee is one flat amount, editable in Studio.
 - Customer accounts — booking is guest-only (name/email/phone per booking).

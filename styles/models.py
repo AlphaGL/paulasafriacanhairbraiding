@@ -31,7 +31,7 @@ class HairstyleService(models.Model):
     salon_price = models.DecimalField(
         max_digits=7,
         decimal_places=2,
-        help_text="Price when the customer comes to Paula's location. Always used for "
+        help_text="Price when the customer comes to Paulette's location. Always used for "
         "the booking total, even if a display override below is set.",
     )
     price_display_override = models.CharField(

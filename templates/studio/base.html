@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}Studio{% endblock %} | Paula's African Hair Braiding</title>
+  <title>{% block title %}Studio{% endblock %} | Paulette's African Hair Braiding</title>
   <link rel="icon" type="image/png" href="{% static 'images/favicon-32.png' %}">
   <link rel="apple-touch-icon" href="{% static 'images/apple-touch-icon.png' %}">
   <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -16,14 +16,14 @@
       <span></span><span></span><span></span>
     </button>
     <img src="{% static 'images/logo-emblem.png' %}" alt="" class="studio-mobile-mark">
-    <span class="studio-mobile-title">Paula's Studio</span>
+    <span class="studio-mobile-title">Paulette's Studio</span>
   </div>
   <div class="studio-sidebar-backdrop" id="studioSidebarBackdrop"></div>
 
   <div class="studio-layout">
     <aside class="studio-sidebar" id="studioSidebar">
       <img src="{% static 'images/logo-emblem.png' %}" alt="" class="studio-brand-mark">
-      <span class="studio-brand">Paula's</span>
+      <span class="studio-brand">Paulette's</span>
       <span class="studio-brand-sub">Studio Dashboard</span>
       <nav class="studio-nav">
         <a href="{% url 'studio:dashboard' %}" class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">Dashboard</a>

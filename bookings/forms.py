@@ -54,7 +54,7 @@ class BookingForm(forms.ModelForm):
                 WEEKDAY_NAMES[d] for d in business.days_closed_list
             )
             raise forms.ValidationError(
-                f"Paula isn't available on this day ({closed_names}). Please pick another date."
+                f"Paulette isn't available on this day ({closed_names}). Please pick another date."
             )
         return requested_date
 
@@ -65,6 +65,6 @@ class BookingForm(forms.ModelForm):
         if location_type == "mobile" and not customer_address:
             self.add_error(
                 "customer_address",
-                "Please enter your address so Paula knows where to come.",
+                "Please enter your address so Paulette knows where to come.",
             )
         return cleaned_data

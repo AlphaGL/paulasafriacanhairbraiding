@@ -17,9 +17,9 @@ WEEKDAY_CHOICES = [
 
 
 class BusinessSettings(models.Model):
-    """Single-row model holding Paula's editable business info."""
+    """Single-row model holding Paulette's editable business info."""
 
-    business_name = models.CharField(max_length=150, default="Paula's African Hair Braiding")
+    business_name = models.CharField(max_length=150, default="Paulette's African Hair Braiding")
     address_line = models.CharField(max_length=255, default="4203 Trio Avenue")
     city = models.CharField(max_length=100, default="Louisville")
     state = models.CharField(max_length=50, default="KY")
@@ -31,7 +31,7 @@ class BusinessSettings(models.Model):
         max_digits=6,
         decimal_places=2,
         default=Decimal("25.00"),
-        help_text="Flat fee added to bookings where Paula travels to the customer.",
+        help_text="Flat fee added to bookings where Paulette travels to the customer.",
     )
 
     business_hours_note = models.CharField(
@@ -81,8 +81,8 @@ class BusinessSettings(models.Model):
 
 class Booking(models.Model):
     class LocationType(models.TextChoices):
-        SALON = "salon", "At Paula's location"
-        MOBILE = "mobile", "Paula comes to me"
+        SALON = "salon", "At Paulette's location"
+        MOBILE = "mobile", "Paulette comes to me"
 
     class Status(models.TextChoices):
         PENDING = "pending", "Pending"
@@ -125,7 +125,7 @@ class Booking(models.Model):
     def clean(self):
         if self.location_type == self.LocationType.MOBILE and not self.customer_address:
             raise ValidationError(
-                {"customer_address": "Address is required when Paula is traveling to you."}
+                {"customer_address": "Address is required when Paulette is traveling to you."}
             )
 
     @property

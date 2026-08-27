@@ -13,11 +13,11 @@ STARTER_CATEGORIES = [
 
 
 class Command(BaseCommand):
-    help = "Seeds business settings (Paula's info) and starter style categories."
+    help = "Seeds business settings (Paulette's info) and starter style categories."
 
     def handle(self, *args, **options):
         business = BusinessSettings.load()
-        business.business_name = "Paula's African Hair Braiding"
+        business.business_name = "Paulette's African Hair Braiding"
         business.address_line = "4203 Trio Avenue"
         business.city = "Louisville"
         business.state = "KY"
